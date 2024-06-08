@@ -13,20 +13,52 @@ public class Main {
             return;
         }
         String filePath = args[0];
-
         generateGraph(filePath);
-
         System.out.println("---------------" + "printGraph" + "---------------");
         printGraph();
-        try {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\n------------------------------------------");
+            System.out.println("Please choose an option: ");
+            System.out.println("1. Query Bridge Words");
+            System.out.println("2. Calculate Shortest Path");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the first word: ");
+                    String word1 = scanner.nextLine().trim();
+                    System.out.print("Enter the second word: ");
+                    String word2 = scanner.nextLine().trim();
+
+                    // 调用 queryBridgeWords 函数并输出结果
+                    String bridgeWordsResult = queryBridgeWords(word1, word2);
+                    System.out.println(bridgeWordsResult);
+                    break;
+
+                case 2:
+                    System.out.print("Enter the first word: ");
+                    String src = scanner.nextLine().trim();
+                    System.out.print("Enter the second word: ");
+                    String dst = scanner.nextLine().trim();
+
+                    // 调用 calcShortestPath 函数并输出结果
+                    String shortestPathResult = calcShortestPath(src, dst);
+                    System.out.println(shortestPathResult);
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please enter 1 or 2.");
+            }
+
             // 使当前线程休眠2秒（2000毫秒）
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            // 处理被中断的情况
-            e.printStackTrace();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println("---------------" + "randomWalk" + "---------------");
-        String walk = randomWalk();
 
     }
 
@@ -123,30 +155,6 @@ public class Main {
         return bridgeWords;
     }
 
-    public static String generateNewText(String inputText) {
-        String[] words = inputText.trim().split("\\s+");
-        StringBuilder newText = new StringBuilder();
-
-        for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i].toLowerCase();
-            String word2 = words[i + 1].toLowerCase();
-
-            newText.append(words[i]).append(" ");
-
-            Set<String> bridgeWords = getBridgeWords(word1, word2);
-
-            if (!bridgeWords.isEmpty()) {
-                String[] bridgeWordsArray = bridgeWords.toArray(new String[0]);
-                String bridgeWord = bridgeWordsArray[random.nextInt(bridgeWordsArray.length)];
-                newText.append(bridgeWord).append(" ");
-            }
-        }
-
-        newText.append(words[words.length - 1]);
-
-        return newText.toString();
-    }
-
     public static String calcShortestPath(String word1, String word2) {
         if (!graph.containsKey(word1) || !graph.containsKey(word2)) {
             return "No " + (!graph.containsKey(word1) ? word1 : word2) + " in the graph!";
@@ -217,62 +225,5 @@ public class Main {
         }
 
         return shortestPaths;
-    }
-
-    public static void printDijkstra(String word) {
-        Map<String, List<String>> shortestPaths = Dijkstra(word);
-        for (Map.Entry<String, List<String>> entry : shortestPaths.entrySet()) {
-            String destination = entry.getKey();
-            List<String> path = entry.getValue();
-            if (!path.isEmpty()) {
-                int length = path.size() - 1; // 路径长度为节点数减1
-                System.out.println("Shortest path from " + word + " to " + destination + ":");
-                System.out.println("Path: " + String.join(" -> ", path));
-                System.out.println("Length: " + length);
-            }
-        }
-    }
-
-    public static String randomWalk() {
-        List<String> nodes = new ArrayList<>(graph.keySet());
-        String currentNode = nodes.get(random.nextInt(nodes.size()));
-
-        StringBuilder walkPath = new StringBuilder(currentNode);
-        Set<String> visitedEdges = new HashSet<>();
-
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            Map<String, Integer> neighbors = graph.get(currentNode);
-            if (neighbors == null || neighbors.isEmpty()) {
-                break;
-            }
-
-            List<String> neighborNodes = new ArrayList<>(neighbors.keySet());
-            String nextNode = neighborNodes.get(random.nextInt(neighborNodes.size()));
-
-            walkPath.append(" ").append(nextNode);
-            currentNode = nextNode;
-
-            if (visitedEdges.contains(nextNode)) {
-                break;
-            }
-            visitedEdges.add(nextNode);
-
-            System.out.println("Current path: " + walkPath);
-            System.out.print("Press Enter to continue or type 'stop' to end: ");
-            String userInput = scanner.nextLine();
-            if ("stop".equalsIgnoreCase(userInput)) {
-                break;
-            }
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("txt/output.txt"))) {
-            writer.write(walkPath.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return walkPath.toString();
     }
 }
