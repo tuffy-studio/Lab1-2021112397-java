@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Main {
     static Map<String, Map<String, Integer>> graph = new HashMap<>();
-    private static Random random = new Random();
 
 
     public static void main(String[] args) {
