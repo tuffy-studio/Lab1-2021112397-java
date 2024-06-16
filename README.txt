@@ -1,9 +1,2 @@
-src文件中是的Main是我为了本次实验而将原本的Main修改后的，它只包含两个会测试的函数：
 查询桥接词：用于黑盒测试
-计算最短路径：用于黑盒测试
-MainTest是最初版的测试文件，它只通过了3个测试，测试样例看实验报告
-MainTest_modified_for_oneInput是第一次修改，它针对只有一个输入的特殊情况进行debug
-MainTest_modified_for_sameInput是第二次修改，它针对两个输入相同的情况进行debug
-MainTest_modified_for_invalidInput是第三次修改，它针对输入不为单词的情况进行debug
-至此代码通过了所有测试，覆盖率为100%
 

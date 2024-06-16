@@ -118,6 +118,18 @@ public class Main {
 
     public static String queryBridgeWords(String word1, String word2) {
         // 输入的word1或word2如果不在图中出现
+        if(word1 == null || word2 == null) {
+            return "error: You have input only one word!!!";
+        }
+        // 如果输入了两个相同的字符串
+        if((word1.equals(word2))){
+            return "error: You have input two same words!!!";
+        }
+        // 输入的word1或word2如果不全由英文字母组成
+        if (!word1.matches("[a-zA-Z]+") || !word2.matches("[a-zA-Z]+")) {
+            return "error: Your input is invalid !!!";
+        }
+        // 输入的word1或word2如果不在图中出现
         if (!graph.containsKey(word1) || !graph.containsKey(word2)) {
             return "No " + (!graph.containsKey(word1) ? word1 : word2) + " in the graph!";
         }
