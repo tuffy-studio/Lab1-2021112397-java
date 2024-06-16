@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
 public class Main {
     static Map<String, Map<String, Integer>> graph = new HashMap<>();
 
@@ -21,7 +20,11 @@ public class Main {
             System.out.println("Please choose an option: ");
             System.out.println("1. Query Bridge Words");
             System.out.println("2. Calculate Shortest Path");
+            System.out.println("3. Exit program");
             int choice = scanner.nextInt();
+            if(choice==3){
+                break;
+            }
             scanner.nextLine();  // Consume newline
 
             switch (choice) {
@@ -48,7 +51,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Invalid choice. Please enter 1 or 2.");
+                    System.out.println("Invalid choice. Please enter 1 or 2 or 3.");
             }
 
             // 使当前线程休眠2秒（2000毫秒）
@@ -195,7 +198,10 @@ public class Main {
 
         while (!nodes.isEmpty()) {
             String current = nodes.poll();
-            if (visited.contains(current)) continue;
+            if (visited.contains(current))
+            {
+                continue;
+            }
             visited.add(current);
 
             if (!current.equals(word)) {
@@ -226,3 +232,4 @@ public class Main {
         return shortestPaths;
     }
 }
+
